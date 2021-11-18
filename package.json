@@ -1,5 +1,5 @@
 {
-  "name": "react-drawing-board",
+  "name": "react-drawing-board-custom",
   "version": "0.5.0-beta.2",
   "description": "",
   "main": "lib/index.js",
@@ -15,8 +15,7 @@
   "scripts": {
     "dev": "umi dev",
     "build": "father build",
-    "prepare": "npm run build",
-    "postinstall": "node scripts/postinstall.js"
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@types/vfile-message": "^2.0.0",
