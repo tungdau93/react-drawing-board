@@ -55,6 +55,13 @@ export const drawBackgroundImage = (
   rerender: () => void,
 ) => {
   let position: Position | undefined = _cacheBackgroundPosition[item.imageData];
+  position = {
+    ...position,
+    x: 0,
+    y: 0,
+    w: canvas.width,
+    h: canvas.height,
+  };
   if (position) {
     drawImage(item, context, position, id, rerender);
   } else {
