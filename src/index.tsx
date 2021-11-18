@@ -40,6 +40,7 @@ interface BlockProps {
   clsssName?: string;
 
   toolbarPlacement?: 'top' | 'left' | 'right';
+  defaultTool: string;
 }
 
 const AnimatedSketchPad = animated(SketchPad);
@@ -66,12 +67,13 @@ const Block: React.FC<BlockProps> = (props) => {
     initialBackground,
     viewMatrix: viewMatrixProp,
     onViewMatrixChange,
+    defaultTool,
   } = {
     ...defaultProps,
     ...props,
   };
 
-  const [currentTool, setCurrentTool] = useState(Tool.Select);
+  const [currentTool, setCurrentTool] = useState(defaultTool || Tool.Select);
   const [currentToolOption, setCurrentToolOption] = useState<ToolOption>(defaultToolOption);
   const enableSketchPad = useReducer(enableSketchPadReducer, true);
   const refSketch = useRef<SketchPadRef>(null);
@@ -115,34 +117,12 @@ const Block: React.FC<BlockProps> = (props) => {
   }, []);
 
   const renderWithLayout = (toolbar: React.ReactElement, sketchPad: React.ReactElement) => {
-    if (toolbarPlacement === 'left' || isMobileDevice) {
-      return (
-        <Layout style={{ flexDirection: 'row' }}>
-          <Sider width={isMobileDevice ? 40 : 55} theme="light">
-            {toolbar}
-          </Sider>
-          <Content>{sketchPad}</Content>
-        </Layout>
-      );
-    } else if (toolbarPlacement === 'top') {
-      return (
-        <Layout hasSider={false}>
-          <Header>{toolbar}</Header>
-          <Content>{sketchPad}</Content>
-        </Layout>
-      );
-    } else if (toolbarPlacement === 'right') {
-      return (
-        <Layout style={{ flexDirection: 'row' }}>
-          <Content>{sketchPad}</Content>
-          <Sider width={55} theme="light">
-            {toolbar}
-          </Sider>
-        </Layout>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <Layout hasSider={false}>
+        <Header>{toolbar}</Header>
+        <Content>{sketchPad}</Content>
+      </Layout>
+    );
   };
 
   const enableSketchPadContextValue = useMemo(() => {
@@ -169,11 +149,11 @@ const Block: React.FC<BlockProps> = (props) => {
             {(config) => (
               <div
                 className={`${config.prefixCls}-container ${clsssName || ''}`}
-                style={{ width: '100vw', height: '100vh', ...(props.style || {}) }}
+                style={{ ...(props.style || {}) }}
               >
                 {renderWithLayout(
                   <Toolbar
-                    toolbarPlacement={toolbarPlacement}
+                    toolbarPlacement="top"
                     currentTool={currentTool}
                     setCurrentTool={setCurrentTool}
                     currentToolOption={currentToolOption}
@@ -224,8 +204,8 @@ const Block: React.FC<BlockProps> = (props) => {
                     viewMatrix={viewMatrix}
                     onViewMatrixChange={setViewMatrix}
                     operations={operations}
-                    initialBackground={initialBackground}
                     onChange={onChange}
+                    initialBackground={initialBackground}
                   />,
                 )}
               </div>

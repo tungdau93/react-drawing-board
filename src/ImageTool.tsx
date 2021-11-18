@@ -1,5 +1,4 @@
 import { MouseEvent } from 'react';
-import { getBackgroundPosition } from './BackgroundTool';
 import Tool, { Position } from './enums/Tool';
 import { mapClientToCanvas } from './utils';
 
@@ -77,10 +76,18 @@ export const onImageComplete = (
 
   image.onload = () => {
     const { top, left } = canvas.getBoundingClientRect();
-    const imageWidth = image.width;
-    const imageHeight = image.height;
-    const offsetWidth = canvas.offsetWidth;
-    const offsetHeight = canvas.offsetHeight;
+    const imageStyle = document.getElementsByClassName(
+      'drawing-board-sketchpad-canvas',
+    )[0] as HTMLElement;
+    const imageWidth = canvas.offsetWidth;
+    const imageHeight = canvas.offsetHeight;
+    let offsetWidth: number = 0;
+    let offsetHeight: number = 0;
+
+    if (imageStyle !== null) {
+      offsetWidth = imageStyle.offsetWidth;
+      offsetHeight = imageStyle.offsetHeight;
+    }
 
     const pos = mapClientToCanvas(
       {

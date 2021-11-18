@@ -1,5 +1,5 @@
 import Tool, { ToolOption, ShapeType, strokeSize, strokeColor } from './enums/Tool';
-import React, { useContext } from 'react';
+import React from 'react';
 import Icon from './icons/Icon';
 import './ShapeTool.less';
 
@@ -87,8 +87,8 @@ const draw = (
     if (typeof context.ellipse === 'function') {
       context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
     } else {
-      let xPos;
-      let yPos;
+      let xPos: number;
+      let yPos: number;
       let i = 0;
       for (i; i < 2 * Math.PI; i += 0.01) {
         xPos = centerX - radiusY * Math.sin(i) * Math.sin(0) + radiusX * Math.cos(i) * Math.cos(0);
@@ -120,8 +120,8 @@ const draw = (
           2 * Math.PI,
         );
       } else {
-        let xPos;
-        let yPos;
+        let xPos: number;
+        let yPos: number;
         let i = 0;
         for (i; i < 2 * Math.PI; i += 0.01) {
           xPos =

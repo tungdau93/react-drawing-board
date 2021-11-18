@@ -108,25 +108,6 @@ const useTools = () => {
           marginRight: 'auto',
         },
       },
-      ...(!isMobileDevice
-        ? [
-            {
-              label: '100%',
-              labelThunk: (props: ToolbarProps) => `${~~(props.scale * 100)}%`,
-              icon: ZoomIcon,
-              type: Tool.Zoom,
-            },
-          ]
-        : []),
-      ...(!isMobileDevice
-        ? [
-            {
-              label: 'umi.block.sketch.save',
-              icon: SaveIcon,
-              type: Tool.Save,
-            },
-          ]
-        : []),
     ];
   }, [showBackgroundTool]);
 
@@ -134,7 +115,7 @@ const useTools = () => {
 };
 
 export interface ToolbarProps {
-  currentTool: Tool;
+  currentTool: string;
   setCurrentTool: (tool: Tool) => void;
   currentToolOption: ToolOption;
   setCurrentToolOption: (option: ToolOption) => void;
@@ -198,20 +179,10 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
     <div
       className={classNames({
         [`${toolbarPrefixCls}-container`]: true,
-        [`${toolbarPrefixCls}-mobile-container`]: isMobileDevice,
       })}
     >
       {tools.map((tool) => {
         let borderTopStyle = 'none';
-        if (isMobileDevice) {
-          if (tool.type === Tool.Stroke && currentToolOption.strokeColor) {
-            borderTopStyle = `3px solid ${currentToolOption.strokeColor}`;
-          }
-
-          if (tool.type === Tool.Shape && currentToolOption.shapeBorderColor) {
-            borderTopStyle = `3px solid ${currentToolOption.shapeBorderColor}`;
-          }
-        }
 
         const iconAnimateProps = useSpring({
           left: isMobileDevice && currentTool !== tool.type ? -12 : 0,
@@ -224,11 +195,11 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
             className={classNames({
               [`${toolbarPrefixCls}-icon`]: true,
               [`${toolbarPrefixCls}-activeIcon`]: currentTool === tool.type && !isMobileDevice,
-              [`${toolbarPrefixCls}-mobile-icon`]: isMobileDevice,
             })}
             style={iconAnimateProps}
             onClick={() => {
               if (tool.type === Tool.Image && refFileInput.current) {
+                refFileInput.current.value = '';
                 refFileInput.current.click();
               } else if (tool.type === Tool.Background) {
               } else if (tool.type === Tool.Undo) {
@@ -237,7 +208,6 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
                 redo();
               } else if (tool.type === Tool.Clear) {
                 clear();
-              } else if (tool.type === Tool.Zoom) {
               } else if (tool.type === Tool.Save) {
                 save();
               } else {
@@ -247,11 +217,9 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
             key={tool.label}
           >
             <tool.icon />
-            {!isMobileDevice ? (
-              <label className={`${toolbarPrefixCls}-iconLabel`}>
-                {tool.labelThunk ? tool.labelThunk(props) : formatMessage({ id: tool.label })}
-              </label>
-            ) : null}
+            <label className={`${toolbarPrefixCls}-iconLabel`}>
+              {formatMessage({ id: tool.label })}
+            </label>
           </animated.div>
         );
 
@@ -274,11 +242,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
               getPopupContainer={(dom) => dom.parentElement}
               key={tool.label}
               overlay={overlay}
-              placement={
-                toolbarPlacement === 'top' || toolbarPlacement === 'left'
-                  ? 'bottomLeft'
-                  : 'bottomRight'
-              }
+              placement={toolbarPlacement === 'top' ? 'bottomLeft' : 'bottomRight'}
               trigger={[isMobileDevice ? 'click' : 'hover']}
               onVisibleChange={(visible) => {
                 enableSketchPadContext.setEnable(!visible);
@@ -295,7 +259,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       <input
         type="file"
         style={{ display: 'none' }}
-        accept="image/*"
+        accept="image/jpeg, image/png"
         ref={refFileInput}
         onChange={handleSelectImage}
       />
@@ -303,7 +267,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       <input
         type="file"
         style={{ display: 'none' }}
-        accept="image/*"
+        accept="image/jpeg, image/png"
         ref={refBgFileInput}
         onChange={handleSelectBackground}
       />

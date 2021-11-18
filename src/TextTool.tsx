@@ -50,22 +50,22 @@ export const onTextMouseDown = (
         ? toolOption.defaultText
         : intl.formatMessage(toolOption.defaultText);
 
-    if (isMobileDevice) {
-      textarea.focus();
-    }
+    // if (isMobileDevice) {
+    //   textarea.focus();
+    // }
 
-    setTimeout(() => {
-      if (getSelection && Range) {
-        const selection = getSelection();
+    // setTimeout(() => {
+    //   if (getSelection && Range) {
+    //     const selection = getSelection();
 
-        if (selection) {
-          selection.removeAllRanges();
-          var range = new Range();
-          range.selectNodeContents(textarea);
-          selection.addRange(range);
-        }
-      }
-    }, 0);
+    //     if (selection) {
+    //       selection.removeAllRanges();
+    //       var range = new Range();
+    //       range.selectNodeContents(textarea);
+    //       selection.addRange(range);
+    //     }
+    //   }
+    // }, 0);
 
     currentText =
       typeof toolOption.defaultText === 'string'
@@ -104,8 +104,8 @@ export const onTextComplete = (
     textarea.style.display = 'none';
 
     const pos: Position = {
-      x: currentPos[0],
-      y: currentPos[1],
+      x: currentPos[0] + 10,
+      y: currentPos[1] + 10,
       w: width,
       h: height,
     };
@@ -143,16 +143,16 @@ export const useTextDropdown = (
     <div className={`${prefixCls}-strokeMenu`}>
       <div className={`${prefixCls}-colorAndSize`}>
         <div className={`${prefixCls}-textSizeSelector`}>
-          {textSize.map(size => {
+          {textSize.map((size) => {
             return (
               <div
                 key={size}
-                onTouchStart={evt => {
+                onTouchStart={(evt) => {
                   evt.stopPropagation();
                   setCurrentToolOption({ ...currentToolOption, textSize: size });
                   setCurrentTool && setCurrentTool(Tool.Stroke);
                 }}
-                onClick={evt => {
+                onClick={(evt) => {
                   evt.stopPropagation();
                   setCurrentToolOption({ ...currentToolOption, textSize: size });
                   setCurrentTool && setCurrentTool(Tool.Stroke);
@@ -170,17 +170,17 @@ export const useTextDropdown = (
         </div>
         <div className={`${prefixCls}-split`}></div>
         <div className={`${prefixCls}-palette`}>
-          {strokeColor.map(color => {
+          {strokeColor.map((color) => {
             return (
               <div
                 className={`${prefixCls}-color`}
                 key={color}
-                onClick={evt => {
+                onClick={(evt) => {
                   evt.stopPropagation();
                   setCurrentToolOption({ ...currentToolOption, textColor: color });
                   setCurrentTool && setCurrentTool(Tool.Stroke);
                 }}
-                onTouchStart={evt => {
+                onTouchStart={(evt) => {
                   evt.stopPropagation();
                   setCurrentToolOption({ ...currentToolOption, textColor: color });
                   setCurrentTool && setCurrentTool(Tool.Stroke);

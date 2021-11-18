@@ -62,7 +62,7 @@ import ConfigContext from './ConfigContext';
 import { usePinch, useWheel } from 'react-use-gesture';
 
 export interface SketchPadProps {
-  currentTool: Tool;
+  currentTool: string;
   setCurrentTool: (tool: Tool) => void;
   currentToolOption: ToolOption;
   userId: string;
@@ -776,7 +776,7 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
         onStrokeMouseDown(x, y, {
           ...currentToolOption,
           strokeSize: (defaultToolOption.strokeSize * 2) / scale,
-          strokeColor: 'rgba(255, 255, 255, 1)',
+          strokeColor: '#F5F5F5',
         });
         break;
       case Tool.Shape:
@@ -925,29 +925,25 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
     clientY: number;
     forceWheel?: boolean;
   }) => {
-    if (isMobileDevice && !evt.forceWheel) return;
-
-    evt.stopPropagation && evt.stopPropagation();
-
-    const { deltaY, ctrlKey } = evt;
-    const [a, b, c, d, e, f] = viewMatrix;
-    let newScale = a + (ctrlKey ? -deltaY : deltaY) / 100;
-    newScale = Math.max(Math.min(newScale, MAX_SCALE), MIN_SCALE);
-
-    if (refCanvas.current) {
-      const pos = mapClientToCanvas(evt, refCanvas.current, viewMatrix);
-      const scaleChange = newScale - a;
-      onViewMatrixChange([
-        newScale,
-        b,
-        c,
-        newScale,
-        e - pos[0] * scaleChange,
-        f - pos[1] * scaleChange,
-      ]);
-    }
-
-    setSelectedOperation(null);
+    // if (isMobileDevice && !evt.forceWheel) return;
+    // evt.stopPropagation && evt.stopPropagation();
+    // const { deltaY, ctrlKey } = evt;
+    // const [a, b, c, d, e, f] = viewMatrix;
+    // let newScale = a + (ctrlKey ? -deltaY : deltaY) / 100;
+    // newScale = Math.max(Math.min(newScale, MAX_SCALE), MIN_SCALE);
+    // if (refCanvas.current) {
+    //   const pos = mapClientToCanvas(evt, refCanvas.current, viewMatrix);
+    //   const scaleChange = newScale - a;
+    //   onViewMatrixChange([
+    //     newScale,
+    //     b,
+    //     c,
+    //     newScale,
+    //     e - pos[0] * scaleChange,
+    //     f - pos[1] * scaleChange,
+    //   ]);
+    // }
+    // setSelectedOperation(null);
   };
 
   const onRemoveOperation = (evt: React.TouchEvent | React.MouseEvent) => {
@@ -966,7 +962,8 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
     // high resolution canvas.
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * DPR;
-    canvas.height = rect.height * DPR;
+    // canvas.height = rect.height * DPR;
+    canvas.height = (canvas.width * 518) / 1076; // set height and width of canvas with ratio 1076/518
     refContext.current = canvas.getContext('2d');
 
     canvas.oncontextmenu = (e) => {
@@ -1047,7 +1044,7 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
           const h = canvas.height;
           const context = refContext.current;
           context.globalCompositeOperation = 'destination-over';
-          context.fillStyle = '#fff';
+          context.fillStyle = '#F5F5F5';
           context.fillRect(0, 0, w, h);
 
           const dataUrl = canvas.toDataURL('image/png');
@@ -1060,8 +1057,8 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
           } else {
             const a = document.createElement('a');
             a.href = dataUrl;
-            a.download = 'sketch.png';
-            a.click();
+            // a.download = 'sketch.png';
+            // a.click();
           }
         }
       },

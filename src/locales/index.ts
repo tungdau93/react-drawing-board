@@ -1,8 +1,9 @@
 import enUS from './en-US';
-import zhCN from './zh-CN';
+import ja from './ja';
 import trTR from './tr-TR';
+import zhCN from './zh-CN';
 
-export type localeType = 'en-US' | 'zh-CN' | 'tr-TR' | 'en' | 'zh' | 'tr';
+export type localeType = 'en-US' | 'zh-CN' | 'tr-TR' | 'en' | 'zh' | 'tr' | 'ja';
 
 export default {
   messages: {
@@ -12,5 +13,6 @@ export default {
     ['en']: enUS,
     ['zh']: zhCN,
     ['tr']: enUS,
+    ['ja']: ja,
   },
 };

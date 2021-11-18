@@ -2,6 +2,7 @@ import { MouseEvent as ReactMouseEvent, RefObject } from 'react';
 import Tool, { Position, ToolOption } from './enums/Tool';
 import { Text, onTextMouseDown } from './TextTool';
 import { Stroke } from './StrokeTool';
+import { Image } from './ImageTool';
 import { Operation, Update, OperationListState, Remove } from './SketchPad';
 import { matrix_multiply, isMobileDevice } from './utils';
 import { IntlShape } from 'react-intl';
@@ -159,9 +160,9 @@ export const onSelectMouseMove = (
         pos: { ...startDragPos, x: startDragPos.x + diff.x, y: startDragPos.y + diff.y },
       });
     } else {
-      setViewMatrix(
-        matrix_multiply([1, 0, 0, 1, diff.x * scale, diff.y * scale], startDragViewMatrix),
-      );
+      // setViewMatrix(
+      //   matrix_multiply([1, 0, 0, 1, diff.x * scale, diff.y * scale], startDragViewMatrix),
+      // );
     }
   } else if (!isMobileDevice) {
     const pos: [number, number] = [x, y];
