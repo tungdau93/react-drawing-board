@@ -108,6 +108,11 @@ const useTools = () => {
           marginRight: 'auto',
         },
       },
+      {
+        label: 'umi.block.sketch.save',
+        icon: SaveIcon,
+        type: Tool.Save,
+      },
     ];
   }, [showBackgroundTool]);
 
