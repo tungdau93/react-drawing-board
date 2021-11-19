@@ -1048,6 +1048,7 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
           context.fillRect(0, 0, w, h);
 
           const dataUrl = canvas.toDataURL('image/png');
+          // console.log(dataUrl);
 
           if (handleSave) {
             handleSave({

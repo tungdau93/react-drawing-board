@@ -55,12 +55,15 @@ export const drawBackgroundImage = (
   rerender: () => void,
 ) => {
   let position: Position | undefined = _cacheBackgroundPosition[item.imageData];
+  const img = document.getElementsByClassName(
+    'drawing-board-sketchpad-container',
+  )[0] as HTMLElement;
   position = {
     ...position,
     x: 0,
     y: 0,
-    w: canvas.width,
-    h: canvas.height,
+    w: img.offsetWidth,
+    h: img.offsetHeight,
   };
   if (position) {
     drawImage(item, context, position, id, rerender);
