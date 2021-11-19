@@ -82,12 +82,21 @@ export const onImageComplete = (
   const image = new Image();
 
   image.onload = () => {
+    const ratio = image.width / image.height;
+
     const { top, left } = canvas.getBoundingClientRect();
     const imageStyle = document.getElementsByClassName(
       'drawing-board-sketchpad-container',
     )[0] as HTMLElement;
-    const imageWidth = canvas.offsetWidth;
-    const imageHeight = canvas.offsetHeight;
+    let imageWidth: number = 0;
+    let imageHeight: number = 0;
+    if (image.width <= imageStyle.offsetWidth) {
+      imageWidth = image.width;
+      imageHeight = image.height;
+    } else {
+      imageWidth = imageStyle.offsetWidth;
+      imageHeight = imageWidth / ratio;
+    }
     let offsetWidth: number = 0;
     let offsetHeight: number = 0;
 

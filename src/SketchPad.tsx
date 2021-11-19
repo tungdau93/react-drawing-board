@@ -612,9 +612,9 @@ const SketchPad: React.ForwardRefRenderFunction<any, SketchPadProps> = (props, r
           saveGlobalTransform();
 
           // background image should not be removed
-          if (backgroundOperation) {
-            renderBackgroundOperation(backgroundOperation);
-          }
+          // if (backgroundOperation) {
+          //   renderBackgroundOperation(backgroundOperation);
+          // }
           break;
         case Tool.Eraser:
         case Tool.Stroke:
