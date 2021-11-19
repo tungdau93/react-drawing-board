@@ -55,15 +55,12 @@ export const drawBackgroundImage = (
   rerender: () => void,
 ) => {
   let position: Position | undefined = _cacheBackgroundPosition[item.imageData];
-  const img = document.getElementsByClassName(
-    'drawing-board-sketchpad-container',
-  )[0] as HTMLElement;
   position = {
     ...position,
     x: 0,
     y: 0,
-    w: img.offsetWidth,
-    h: img.offsetHeight,
+    w: canvas.offsetWidth,
+    h: canvas.offsetHeight,
   };
   if (position) {
     drawImage(item, context, position, id, rerender);
@@ -87,7 +84,7 @@ export const onImageComplete = (
   image.onload = () => {
     const { top, left } = canvas.getBoundingClientRect();
     const imageStyle = document.getElementsByClassName(
-      'drawing-board-sketchpad-canvas',
+      'drawing-board-sketchpad-container',
     )[0] as HTMLElement;
     const imageWidth = canvas.offsetWidth;
     const imageHeight = canvas.offsetHeight;
