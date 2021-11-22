@@ -199,7 +199,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
           <animated.div
             className={classNames({
               [`${toolbarPrefixCls}-icon`]: true,
-              [`${toolbarPrefixCls}-activeIcon`]: currentTool === tool.type && !isMobileDevice,
+              [`${toolbarPrefixCls}-activeIcon`]: currentTool === tool.type,
             })}
             style={iconAnimateProps}
             onClick={() => {
